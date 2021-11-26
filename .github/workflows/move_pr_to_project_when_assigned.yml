@@ -43,6 +43,8 @@ jobs:
             sed -n 's/ *\(.*\),/\1/p' | \
             sort > \
             /tmp/reviewers.txt
+      - run: cat /tmp/team_members.txt
+      - run: cat /tmp/reviewers.txt
       - id: intersect_reviewers_and_team_members
         run: join /tmp/team_members.txt /tmp/reviewers.txt
 #      - uses: octokit/graphql-action@v2.x

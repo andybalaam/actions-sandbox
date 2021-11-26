@@ -8,9 +8,28 @@ jobs:
     name: Move to board if assigned to me
     runs-on: ubuntu-latest
     steps:
-      - if: contains(github.event.pull_request.requested_reviewers[*].login, 'kittykat')
-        uses: octokit/graphql-action@v2.x
+      - uses: octokit/graphql-action@v2.x
+        id: find_team_members
+        with:
+          headers: '{"GraphQL-Features": "projects_next_graphql"}'
+          query: |
+            query find_team_members($team: String!) {
+              organization(login: "vector-im") {
+                team(slug: $team) {
+                  members {
+                    nodes {
+                      login
+                    }
+                  }
+                }
+              }
+            }
+          team: "element-web"
+        env:
+          GITHUB_TOKEN: ${{ secrets.TEMP_TOKEN }}
+      - uses: octokit/graphql-action@v2.x
         id: add_to_project
+        if: contains(github.event.pull_request.requested_reviewers[*].login, 'kittykat')
         with:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |

@@ -2,7 +2,10 @@ name: Move assigned pr
 on:
   pull_request:
     types: [review_requested]
-
+env:
+  PROJECT_ID: "PN_kwHOAAEsDM3YmA"
+  GITHUB_TOKEN: ${{ secrets.TEMP_TOKEN }}
+  TEAM: "element-web"
 jobs:
   add_design_pr_to_project:
     name: Move to board if assigned to me
@@ -24,24 +27,21 @@ jobs:
                 }
               }
             }
-          team: "element-web"
-        env:
-          GITHUB_TOKEN: ${{ secrets.TEMP_TOKEN }}
-      - uses: octokit/graphql-action@v2.x
-        id: add_to_project
-        if: contains(github.event.pull_request.requested_reviewers[*].login, 'kittykat')
-        with:
-          headers: '{"GraphQL-Features": "projects_next_graphql"}'
-          query: |
-            mutation add_to_project($projectid:String!, $contentid:String!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
-                  id
-                }
-              }
-            }
-          projectid: ${{ env.PROJECT_ID }}
-          contentid: ${{ github.event.pull_request.node_id }}
-        env:
-          PROJECT_ID: "PN_kwHOAAEsDM3YmA"
-          GITHUB_TOKEN: ${{ secrets.TEMP_TOKEN }}
+          team: ${{ env.TEAM }}
+      - id: A
+        run: echo ${{ steps.find_team_members.output.organization.team.members.nodes[*].login }}
+#      - uses: octokit/graphql-action@v2.x
+#        id: add_to_project
+#        if: contains(github.event.pull_request.requested_reviewers[*].login, ${{ env.TEAM }})
+#        with:
+#          headers: '{"GraphQL-Features": "projects_next_graphql"}'
+#          query: |
+#            mutation add_to_project($projectid:String!, $contentid:String!) {
+#              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
+#                projectNextItem {
+#                  id
+#                }
+#              }
+#            }
+#          projectid: ${{ env.PROJECT_ID }}
+#          contentid: ${{ github.event.pull_request.node_id }}

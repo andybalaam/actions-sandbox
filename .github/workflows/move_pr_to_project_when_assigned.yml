@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     if: >
         contains(github.event.pull_request.requested_reviewers, 'kittykat')
-        contains(github.event.pull_request.requested_teams, '')
     steps:
       - uses: octokit/graphql-action@v2.x
         id: add_to_project

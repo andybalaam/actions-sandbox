@@ -10,8 +10,8 @@ jobs:
     if: contains(github.event.pull_request.requested_reviewers, 'kittykat')
     steps:
       - id: foo
-        run:
-          - echo ${{ github.event.pull_request.requested_reviewers }}
+        run: |
+          echo ${{ github.event.pull_request.requested_reviewers }}
 #      - uses: octokit/graphql-action@v2.x
 #        id: add_to_project
 #        with:

@@ -9,20 +9,23 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.event.pull_request.requested_reviewers, 'kittykat')
     steps:
-      - uses: octokit/graphql-action@v2.x
-        id: add_to_project
-        with:
-          headers: '{"GraphQL-Features": "projects_next_graphql"}'
-          query: |
-            mutation add_to_project($projectid:String!, $contentid:String!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
-                  id
-                }
-              }
-            }
-          projectid: ${{ env.PROJECT_ID }}
-          contentid: ${{ github.event.pull_request.node_id }}
-        env:
-          PROJECT_ID: "PN_kwHOAAEsDM3YmA"
-          GITHUB_TOKEN: ${{ secrets.TEMP_TOKEN }}
+      - id: foo
+        run:
+          - echo ${{ github.event.pull_request.requested_reviewers }}
+#      - uses: octokit/graphql-action@v2.x
+#        id: add_to_project
+#        with:
+#          headers: '{"GraphQL-Features": "projects_next_graphql"}'
+#          query: |
+#            mutation add_to_project($projectid:String!, $contentid:String!) {
+#              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
+#                projectNextItem {
+#                  id
+#                }
+#              }
+#            }
+#          projectid: ${{ env.PROJECT_ID }}
+#          contentid: ${{ github.event.pull_request.node_id }}
+#        env:
+#          PROJECT_ID: "PN_kwHOAAEsDM3YmA"
+#          GITHUB_TOKEN: ${{ secrets.TEMP_TOKEN }}

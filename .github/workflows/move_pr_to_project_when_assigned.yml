@@ -37,7 +37,8 @@ jobs:
             sort > \
             /tmp/team_members.txt
       - id: write_reviewers_to_file
-        run: echo "${{ tojson(github.event.pull_request.requested_reviewers[*].login) }}" | \
+        run: |
+          echo "${{ tojson(github.event.pull_request.requested_reviewers[*].login) }}" | \
             grep -v '\[' | \
             grep -v '\]' | \
             sed -n 's/ *\(.*\),/\1/p' | \

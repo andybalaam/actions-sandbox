@@ -25,4 +25,4 @@ jobs:
           contentid: ${{ github.event.pull_request.node_id }}
         env:
           PROJECT_ID: "PN_kwHOAAEsDM3YmA"
-          GITHUB_TOKEN: ${{ secrets.ELEMENT_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

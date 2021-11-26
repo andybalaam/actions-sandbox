@@ -4,7 +4,7 @@ on:
     types: [review_requested]
 env:
   PROJECT_ID: "PN_kwHOAAEsDM3YmA"   # The project to move PRs into
-  TEAM: "element-web"               # The team of reviewers
+  TEAM: "design"                    # The team of reviewers
   GITHUB_TOKEN: ${{ secrets.TEMP_TOKEN }}
 jobs:
   add_design_pr_to_project:

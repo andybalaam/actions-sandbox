@@ -1,11 +1,11 @@
-name: Move assigned pr
+name: Move PRs into a project when a team member is asked to review
 on:
   pull_request:
     types: [review_requested]
 env:
-  PROJECT_ID: "PN_kwHOAAEsDM3YmA"
+  PROJECT_ID: "PN_kwHOAAEsDM3YmA"   # The project to move PRs into
+  TEAM: "element-web"               # The team of reviewers
   GITHUB_TOKEN: ${{ secrets.TEMP_TOKEN }}
-  TEAM: "element-web"
 jobs:
   add_design_pr_to_project:
     name: Move to board if assigned to me
@@ -29,7 +29,9 @@ jobs:
             }
           team: ${{ env.TEAM }}
       - id: A
-        run: echo ${{ tojson(fromjson(steps.find_team_members.outputs.data).organization.team.members.nodes[*].login) }}
+        run: echo "${{ tojson(fromjson(steps.find_team_members.outputs.data).organization.team.members.nodes[*].login) }}" > /tmp/team_members.txt
+      - id: B
+        run: cat /tmp/team_members.txt
 #      - uses: octokit/graphql-action@v2.x
 #        id: add_to_project
 #        if: contains(github.event.pull_request.requested_reviewers[*].login, ${{ env.TEAM }})

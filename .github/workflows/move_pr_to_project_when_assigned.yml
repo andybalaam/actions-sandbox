@@ -7,8 +7,7 @@ jobs:
   add_design_pr_to_project:
     name: Move to board if assigned to me
     runs-on: ubuntu-latest
-    if: >
-        contains(github.event.pull_request.requested_reviewers, 'kittykat')
+    if: contains(github.event.pull_request.requested_reviewers, 'kittykat')
     steps:
       - uses: octokit/graphql-action@v2.x
         id: add_to_project
@@ -25,5 +24,5 @@ jobs:
           projectid: ${{ env.PROJECT_ID }}
           contentid: ${{ github.event.pull_request.node_id }}
         env:
-          PROJECT_ID: "PRO_kwLOGcIvo84A0qQh"
+          PROJECT_ID: "PN_kwHOAAEsDM3YmA"
           GITHUB_TOKEN: ${{ secrets.ELEMENT_BOT_TOKEN }}

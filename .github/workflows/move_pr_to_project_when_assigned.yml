@@ -8,7 +8,7 @@ jobs:
     name: Move to board if assigned to me
     runs-on: ubuntu-latest
     if: >
-        contains(github.event.pull_request.requested_reviewers, 'andybalaam')
+        contains(github.event.pull_request.requested_reviewers, 'kittykat')
         contains(github.event.pull_request.requested_teams, '')
     steps:
       - uses: octokit/graphql-action@v2.x

@@ -31,13 +31,13 @@ jobs:
       - id: write_team_members_to_file
         run: |
           echo "${{ tojson(fromjson(steps.find_team_members.outputs.data).organization.team.members.nodes[*].login) }}" | \
-            jq --raw-output .[] \
+            jq --raw-output .[] | \
             sort > \
             /tmp/team_members.txt
       - id: write_reviewers_to_file
         run: |
           echo "${{ tojson(github.event.pull_request.requested_reviewers[*].login) }}" | \
-            jq --raw-output .[] \
+            jq --raw-output .[] | \
             sort > \
             /tmp/reviewers.txt
       - run: cat /tmp/team_members.txt

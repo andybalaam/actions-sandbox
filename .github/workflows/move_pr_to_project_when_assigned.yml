@@ -28,22 +28,12 @@ jobs:
               }
             }
           team: ${{ env.TEAM }}
-      - id: write_team_members_to_file
+      - id: any_reviewers_in_the_team
         run: |
-          echo "${{ tojson(fromjson(steps.find_team_members.outputs.data).organization.team.members.nodes[*].login) }}" | \
-            jq --raw-output .[] | \
-            sort > \
-            /tmp/team_members.txt
-      - id: write_reviewers_to_file
-        run: |
-          echo "${{ tojson(github.event.pull_request.requested_reviewers[*].login) }}" | \
-            jq --raw-output .[] | \
-            sort > \
-            /tmp/reviewers.txt
-      - run: cat /tmp/team_members.txt
-      - run: cat /tmp/reviewers.txt
-      - id: intersect_reviewers_and_team_members
-        run: |
+          echo "${{ tojson(fromjson(steps.find_team_members.outputs.data).organization.team.members.nodes[*].login) }}" > /tmp/team_members.json
+          echo "${{ tojson(github.event.pull_request.requested_reviewers[*].login) }}" > /tmp/reviewers.json
+          jq --raw-output .[] /tmp/team_members.json | sort > tee /tmp/team_members.txt
+          jq --raw-output .[] /tmp/reviewers.json | sort | tee /tmp/reviewers.txt
           if [ $(join /tmp/team_members.txt /tmp/reviewers.txt | wc -l) = 0 ]; then
             echo "::set-output name=match::false"
           else

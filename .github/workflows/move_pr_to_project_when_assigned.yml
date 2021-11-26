@@ -53,7 +53,7 @@ jobs:
           fi
       - uses: octokit/graphql-action@v2.x
         id: add_to_project
-        if: steps.intersect_reviewers_and_team_members.outputs.match == "true"
+        if: steps.intersect_reviewers_and_team_members.outputs.match == 'true'
         with:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |

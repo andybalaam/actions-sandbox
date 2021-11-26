@@ -28,10 +28,12 @@ jobs:
               }
             }
           team: ${{ env.TEAM }}
-      - id: A
-        run: echo "${{ tojson(fromjson(steps.find_team_members.outputs.data).organization.team.members.nodes[*].login) }}" > /tmp/team_members.txt
-      - id: B
-        run: cat /tmp/team_members.txt
+      - id: write_team_members_to_file
+        run: echo "${{ tojson(fromjson(steps.find_team_members.outputs.data).organization.team.members.nodes[*].login) }}" | sort > /tmp/team_members.txt
+      - id: write_reviewers_to_file
+        run: echo "${{ tojson(github.event.pull_request.requested_reviewers[*].login) }}" | sort > /tmp/reviewers.txt
+      - id: intersect_reviewers_and_team_members
+        run: join /tmp/team_members.txt /tmp/reviewers.txt
 #      - uses: octokit/graphql-action@v2.x
 #        id: add_to_project
 #        if: contains(github.event.pull_request.requested_reviewers[*].login, ${{ env.TEAM }})

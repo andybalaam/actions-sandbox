@@ -1,0 +1,30 @@
+name: Move assigned pr
+on:
+  pull_request:
+    types: [review_requested]
+
+jobs:
+  add_design_pr_to_project:
+    name: Move to board if assigned to me
+    runs-on: ubuntu-latest
+    if: >
+        contains(github.event.pull_request.requested_reviewers, 'andybalaam')
+        contains(github.event.pull_request.requested_teams, '')
+    steps:
+      - uses: octokit/graphql-action@v2.x
+        id: add_to_project
+        with:
+          headers: '{"GraphQL-Features": "projects_next_graphql"}'
+          query: |
+            mutation add_to_project($projectid:String!, $contentid:String!) {
+              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
+                projectNextItem {
+                  id
+                }
+              }
+            }
+          projectid: ${{ env.PROJECT_ID }}
+          contentid: ${{ github.event.pull_request.node_id }}
+        env:
+          PROJECT_ID: "PRO_kwLOGcIvo84A0qQh"
+          GITHUB_TOKEN: ${{ secrets.ELEMENT_BOT_TOKEN }}
